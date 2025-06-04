@@ -1,0 +1,12 @@
+{
+    "firstName": "Raman",
+    "lastName": "A",
+    "address": "123 Main St",
+    "city": "London",
+    "state": "London",
+    "zipCode": "12345",
+    "phone": "123-456-7890",
+    "ssn": "123-45-6789",
+    "usernamePrefix": "ramant_",
+    "password": "password"
+}

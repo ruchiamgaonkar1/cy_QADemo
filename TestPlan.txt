@@ -1,0 +1,134 @@
+Parabank Website Test Plan: 
+
+1. Introduction
+
+This document outlines the comprehensive test plan for the Parabank demo website, 
+hosted at `https://parabank.parasoft.com/parabank/overview.htm`. 
+The plan focuses on validating its core online banking functionalities, including user registration, 
+account management, funds transfers, bill payments, loan requests, and customer support features. 
+The primary goal is to ensure the website's functionality, usability, data integrity, 
+and basic security as a demonstration of online banking capabilities.
+
+
+2. Test Items
+
+The primary test items for this plan include:
+
+Parabank Online Banking Portal (Web Application):The entire application accessible via standard web browsers.
+1. User Registration and Login Module:`register.htm`, `login.htm`
+2. Account Services Modules:
+    * Open New Account (`openaccount.htm`)
+    * Transfer Funds (`transfer.htm`)
+    * Bill Pay (`billpay.htm`)
+    * Find Transactions (`findtrans.htm`)
+    * Request Loan (`requestloan.htm`)
+    * Update Contact Info (`updateprofile.htm`)
+    * Overview (`overview.htm`), Accounts Overview (`accounts.htm`), Transaction Details (`activity.htm`)
+3. Customer Care Module:  Contact page (`contact.htm`)
+4. Associated Backend APIs and Database Interactions:
+    All services supporting the front-end functionalities, ensuring data consistency and integrity within the demo environment.
+
+
+3. Features to be Tested
+
+Based on the `parabank.parasoft.com` website, the following specific features will be tested:
+
+1.User Registration & Login: 
+    * Successful registration with valid, unique user data.
+    * Login with valid credentials.
+    * Login with invalid username/password.
+    * "Forgot Login Info" functionality (recovery process).
+    * Logout functionality.
+    * Session management (e.g., inactivity timeout).
+2. End-to-End Workflow: Registration → Login → Fund Transfer → Transaction Verification
+3. Open New Account:
+    * Ability to open new Checking and Savings accounts.
+    * Validation of account type selection.
+    * Selection of an existing account for initial deposit.
+    * Confirmation of new account creation and updated `Account Overview`.
+4. Transfer Funds + API Validation:
+    * Ability to transfer funds between any two valid accounts belonging to the logged-in user.
+    * Validation of transfer amount (positive, within balance).
+    * Confirmation message and updated account balances after transfer.
+5. Bill Pay:
+    * Ability to add a new payee (Name, Address, City, State, Zip Code, Phone #, Account #).
+    * Successful payment to an existing payee.
+    * Validation of amount (positive).
+    * Confirmation of successful payment.
+6.Find Transactions:
+    * Ability to search transactions by:
+        * Transaction Id
+        * Date (before/on)
+        * Amount
+    * Ability to search transactions by various criteria (Transaction Type, Date Range) from the `Account Activity` page.
+    * Accuracy and completeness of search results.
+7.Request Loan:
+    * Ability to submit a loan request with valid loan amount and down payment.
+    * Correct display of approval/denial status.
+    * If approved, verification of new loan account appearing in `Account Overview`.
+8.Update Contact Info:
+    * Ability to update personal contact information (Address, City, State, Zip Code, Phone #).
+    * Validation of input fields.
+    * Confirmation of successful update.
+9.Customer Care:
+    * Functionality of the "Contact Us" form (Name, Email, Phone, Message).
+    * Confirmation message upon successful submission.
+10.Navigation & Usability:
+    * Consistent navigation across all pages.
+    * User-friendly interface and clear messaging.
+    * Breadcrumbs functionality (if applicable).
+    * Error handling for invalid inputs or system errors.
+11.Performance (Basic Responsiveness):
+    * Page load times for key interactions (login, account overview, transaction submission).
+    * Responsiveness during data retrieval.
+12.Compatibility:
+    * Basic functionality across major desktop browsers (Chrome, Firefox, Edge, Safari).
+    * Responsiveness on different screen sizes (though not a fully responsive design, check for major layout issues on smaller windows).
+
+4. Features Not to be Tested
+
+1.Real-world financial transactions: As this is a demo site, no actual money is transferred. Focus is on the simulation.
+2.Deep-dive security penetration testing:  While basic security checks will be performed, comprehensive penetration testing is outside the scope for a demo application.
+3.Scalability testing:  Performance testing will focus on basic responsiveness, not large-scale load.
+4.Integration with external payment gateways (real ones):  The bill pay and transfer functionalities are simulated.
+5.Database-level data consistency beyond UI verification:  While data integrity is key, direct database queries for validation are out of scope unless explicitly necessary to debug UI issues.
+6.Comprehensive Accessibility (WCAG compliance):  Basic keyboard navigation and screen reader compatibility will be checked, but full compliance is not the primary focus for this demo site test plan.
+
+5. Test Approach
+
+Our approach will be a combination of structured manual testing and targeted automation for critical flows, 
+suitable for validating a demo application.
+
+5.1. Test Design
+
+1.Test Case Creation:  Detailed, step-by-step test cases will be developed for each feature listed in Section 3, covering positive, negative, and boundary conditions.
+2.Requirement Traceability:  Test cases will implicitly or explicitly map to the functionalities identified on the Parabank website.
+3.Exploratory Testing:  Sessions will be dedicated to unscripted exploration, focusing on discovering unexpected behavior or usability glitches within the financial transaction flows and navigation.
+
+5.2. Test Execution
+
+*  Smoke Testing:  Performed on any new deployment to ensure the application is stable and core functionalities (login, account overview) are accessible.
+*  Functional Testing:  Manual and automated execution of test cases to verify that all features behave as observed on the live demo site and as expected for a banking portal.
+*  UI/UX Testing:  Manual validation of visual consistency, layout, navigation, and user-friendliness across different pages.
+*  Basic Performance Testing:  Informal checks on page load times and transaction responsiveness.
+*  Basic Security Testing:  Verify HTTPS, check simple input validation, and observe session behavior.
+*  Compatibility Testing:  Verify functionality across the specified browsers and basic screen sizes.
+*  Regression Testing:  A subset of key automated and manual tests will be run regularly to ensure new changes don't break existing functionalities.
+*  Ad-hoc Testing:  Unstructured testing by testers to find defects that might be missed by formal test cases.
+
+5.3. Test Automation Strategy
+
+*  Scope:  Key repeatable flows such as User Registration, Login, Account Overview, Transfer Funds, and Bill Pay (adding payee, making payment).
+*  Tools:  Selenium WebDriver or Playwright for UI automation, simple HTTP client (e.g., Postman) for API validation if direct API calls are possible and stable on the demo.
+*  Focus:  Ensure the core flows are stable and quickly verifiable after any changes.
+
+6. Test Environment
+
+*  Publicly Accessible Parabank Demo Site:  `https://parabank.parasoft.com/parabank/overview.htm`
+*  Test Data: 
+    * Users will create new accounts through the registration feature to generate unique test data.
+    * Pre-existing Parabank accounts (e.g., `john`/`demo` as often suggested for demo sites) can be used for initial exploration.
+    * Generated transaction data from performed actions will be used for `Find Transactions` testing.
+*  Browsers:  Latest stable versions of Chrome, Firefox, Microsoft Edge, and Safari (on macOS).
+*  Operating Systems:  Windows 10/11, macOS (latest two versions).
+
