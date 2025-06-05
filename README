@@ -1,0 +1,15 @@
+Here is the README file for the project.
+1. Run new user registration
+    - This will update lastCreatedUser.json with the user details created during the run.
+    - Default user details are: 
+        - username: "john"
+        - password: "demo"
+        Like : 
+        {
+            "username": "ramant_1234",
+            "password": "Pass_1234"
+        }
+       
+2. Run new user login
+    - This will use the lastCreatedUser.json for the user details for exceution of the test.
+    
