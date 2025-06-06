@@ -1,4 +1,34 @@
 Here is the README file for the project.
+1. Setup : 
+
+
+    Reporting: 
+    1.Install mochawesome reporter: npm i --save-dev cypress-mochawesome-reporter
+    2.Add reporter to cypress.config.js: 
+        const { defineConfig } = require('cypress')
+        module.exports = defineConfig({
+            reporter: 'mochawesome',
+            reporterOptions: {
+            reportDir: 'cypress/results',
+            overwrite: false,
+            html: true,
+            json: false,
+            reportPageTitle: 'custom-title',
+            embeddedScreenshots: false,
+            },
+        })
+    3. Add reporter to support/e2e.js:
+        import 'cypress-mochawesome-reporter/register';
+    4. Running testcase from terminal: 
+        npx cypress run --reporter mochawesome --reporter-options reportDir="cypress/results/
+        This will generate the report in the cypress/results folder and execute all the testcases.
+    
+2. Running testcase from cypress UI: 
+        - Open cypress UI: npx cypress open
+        - Select the testcase to run
+        - Click on run button
+        - Report will be generated in the cypress/results folder
+
 1. Run new user registration
     - This will update lastCreatedUser.json with the user details created during the run.
     - Default user details are: 

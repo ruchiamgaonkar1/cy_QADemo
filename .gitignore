@@ -9,7 +9,8 @@ build
 _test-output
 cypress.zip
 .babel-cache
-
+cypress/results/*.html
+cypress/screenshots
 # from config, compiled .js files
 packages/config/src/*.js
 
