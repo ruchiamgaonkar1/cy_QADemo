@@ -1,6 +1,7 @@
 {
   "devDependencies": {
-    "cypress": "^14.4.1"
+    "cypress": "^14.4.1",
+    "cypress-mochawesome-reporter": "^3.8.2"
   },
   "name": "cy_qademo",
   "version": "1.0.0",
