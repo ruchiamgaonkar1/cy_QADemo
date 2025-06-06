@@ -1,0 +1,28 @@
+{
+  "scenarios": [
+    {
+      "username": "wrongUser",
+      "password": "wrongPass",
+      "description": "invalid username and password",
+      "expectedError": "The username and password could not be verified."
+    },
+    {
+      "username": " ",
+      "password": " ",
+      "description": "empty credentials",
+      "expectedError": "The username and password could not be verified."
+    },
+    {
+      "username": "admin",
+      "password": " ",
+      "description": "missing password",
+      "expectedError": "The username and password could not be verified."
+    },
+    {
+        "username": "admin",
+        "password": "1234567890...",
+        "description": "password length limit",
+        "expectedError": "The username and password could not be verified."
+    }
+  ]
+} 

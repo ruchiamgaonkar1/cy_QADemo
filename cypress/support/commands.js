@@ -23,3 +23,48 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+// ***********************************************
+// Custom Commands for Parabank Application
+// ***********************************************
+
+/**
+ * Navigate to login page and verify elements
+ * @example
+ * cy.navigateToLogin()
+ */
+Cypress.Commands.add('navigateToLogin', () => {
+    cy.fixture('config').then((config) => {
+        // Navigate to base URL
+        cy.visit(`${config.baseUrl}/index.htm`);
+        
+        // Verify login form elements are present
+        cy.get('input[name="username"]').should('be.visible');
+        cy.get('input[name="password"]').should('be.visible');
+        cy.get('input[value="Log In"]').should('be.visible');
+    });
+});
+
+/**
+ * Login with provided credentials
+ * @param {string} username - Username to login with
+ * @param {string} password - Password to login with
+ * @example
+ * cy.login('testuser', 'testpass')
+ */
+Cypress.Commands.add('login', (username, password) => {
+    cy.navigateToLogin();
+    cy.get('input[name="username"]').type(username);
+    cy.get('input[name="password"]').type(password);
+    cy.get('input[value="Log In"]').click();
+    cy.wait(500); // Wait for login process
+});
+
+/**
+ * Logout from the application
+ * @example
+ * cy.logout()
+ */
+Cypress.Commands.add('logout', () => {
+    cy.get('a[href="logout.htm"]').click();
+});
