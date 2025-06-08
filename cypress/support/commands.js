@@ -80,6 +80,8 @@ Cypress.Commands.add('login', (username, password, useApi = false) => {
     } else {
         // UI Login
         cy.navigateToLogin();
+        cy.log('username', username);   
+        cy.log('password', password);
         cy.get('input[name="username"]').type(username);
         cy.get('input[name="password"]').type(password);
         cy.get('input[value="Log In"]').click();
@@ -94,6 +96,7 @@ Cypress.Commands.add('login', (username, password, useApi = false) => {
  */
 Cypress.Commands.add('logout', () => {
     cy.get('a[href="logout.htm"]').click();
+    cy.wait(500);
 });
 
 /**

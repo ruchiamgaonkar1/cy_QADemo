@@ -16,6 +16,7 @@ describe('Parabank - Register New User', () => {
             cy.logout();
 
             // Validate registration via API
+            cy.log(`Validating user login via API: ${this.config.baseUrl}/login.htm`);
             cy.request({
                 method: 'POST',
                 url: `${this.config.baseUrl}/login.htm`,

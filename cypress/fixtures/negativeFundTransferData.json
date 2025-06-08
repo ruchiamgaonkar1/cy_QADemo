@@ -1,0 +1,32 @@
+{
+    "scenarios": [
+        {
+            "amount": " ",
+            "description": "missing amount",
+            "expectedError": "The amount cannot be empty"
+        },
+        {
+            "amount": "-50",
+            "description": "negative amount",
+            "expectedError": "The amount cannot be negative",
+            "knownIssue": "Currently passing but should fail"
+        },
+        {
+            "amount": "abc",
+            "description": "non-numeric amount",
+            "expectedError": "Please enter a valid amount"
+        },
+        {
+            "amount": "1000000",
+            "description": "excessively large amount",
+            "expectedError": "Transfer amount is too large",
+            "knownIssue": "Currently passing but should fail"
+        },
+        {
+            "amount": "999999999999",
+            "description": "transfer amount exceeds available balance",
+            "expectedError": "Insufficient funds",
+            "knownIssue": "Currently passing but should fail"
+        }
+    ]
+} 
