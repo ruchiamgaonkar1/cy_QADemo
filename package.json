@@ -1,7 +1,9 @@
 {
   "devDependencies": {
     "cypress": "^14.4.1",
-    "cypress-mochawesome-reporter": "^3.8.2"
+    "cypress-mochawesome-reporter": "^3.8.2",
+    "eslint": "^9.28.0",
+    "eslint-plugin-cypress": "^5.1.0"
   },
   "name": "cy_qademo",
   "version": "1.0.0",
@@ -174,6 +176,8 @@
     "yauzl": "^2.10.0"
   },
   "scripts": {
+    "lint": "eslint cypress/**/*.js",
+    "lint:fix": "eslint cypress/**/*.js --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ruchi",

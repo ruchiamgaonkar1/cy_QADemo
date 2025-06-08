@@ -88,7 +88,7 @@ export const getAccountIdFromXml = (xmlString) => {
       console.error("An unexpected error occurred while processing XML:", e);
       return null;
     }
-  }
+  };
 
 /**
  * Reads the 'amount' of the first 'Debit' transaction from an XML string.
@@ -133,7 +133,7 @@ export const getFirstDebitAmountFromXml = (xmlString) => {
       console.error("An unexpected error occurred while processing XML:", e);
       return null;
     }
-  }
+  };
 
   /**
  * Reads the 'balance' from an XML string representing an account.
@@ -166,4 +166,4 @@ export const getBalanceFromAccountXml = (xmlString) => {
       console.error("An unexpected error occurred while processing XML:", e);
       return null;
     }
-  }
+  };

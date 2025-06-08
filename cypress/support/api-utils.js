@@ -73,7 +73,7 @@ export const getAccountTransactions = (accountId) => {
  * @returns {Cypress.Chainable} Promise resolving to verification result
  */
 export const verifyTransaction = ({ accountId, amount, options = {} }) => {
-    const { index = 0, type } = options;
+    const { index = 0 } = options;
 
     return getAccountTransactions(accountId).then((response) => {
         expect(response.status).to.eq(200);
