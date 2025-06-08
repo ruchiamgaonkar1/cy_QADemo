@@ -168,28 +168,44 @@ Cypress.Commands.add('getCustomerIdFromDirectLogin', (username, password) => {
             cy.log('Direct Login Response:', response.status, response.body);
             
             if (response.status === 200) {
+                // Validate response body exists
                 if (!response.body) {
-                    throw new Error(`Failed to get customer ID. Status: ${response.status}, Body: ${JSON.stringify(response.body)}`);
+                    const errorMsg = 'Login successful but received empty response body';
+                    cy.log(errorMsg);
+                    throw new Error(errorMsg);
                 }
+
+                // Extract and validate customer ID
                 const customerId = response.body.id;
-                cy.log('Got customer ID:', customerId);
+                if (!customerId) {
+                    const errorMsg = 'Login successful but customer ID is missing from response';
+                    cy.log(errorMsg);
+                    throw new Error(errorMsg);
+                }
+
+                cy.log('Successfully retrieved customer ID:', customerId);
                 
-                // Store in both env and fixture
+                // Store customer ID in Cypress environment
                 Cypress.env('customerId', customerId);
                 
-                // Update fixture file with new state
+                // Update test state in fixture file
                 cy.readFile('cypress/fixtures/testState.json').then((state) => {
-                    state.customerId = customerId;
-                    state.lastLoginResponse = response.body;
-                    state.lastTestRun = new Date().toISOString();
-                    
-                    return cy.writeFile('cypress/fixtures/testState.json', state);
+                    const updatedState = {
+                        ...state,
+                        customerId,
+                        lastLoginResponse: response.body,
+                        lastTestRun: new Date().toISOString()
+                    };
+                    return cy.writeFile('cypress/fixtures/testState.json', updatedState);
                 });
                 
-                // Return using cy.wrap to maintain chain
                 return cy.wrap(customerId);
             }
-            throw new Error(`Failed to get customer ID. Status: ${response.status}, Body: ${JSON.stringify(response.body)}`);
+
+            // Handle non-200 status codes
+            const errorMsg = `Login failed with status ${response.status}: ${JSON.stringify(response.body)}`;
+            cy.log(errorMsg);
+            throw new Error(errorMsg);
         });
     });
 });
