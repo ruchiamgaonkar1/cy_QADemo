@@ -7,9 +7,10 @@
  * Tests both positive and negative scenarios for fund transfers
  */
 describe('Parabank - End-to-End UI Workflow (Login via UI + Fund Transfer)', () => {
+    let testCredentials;  // Variable to store credentials between tests
+    
     beforeEach(() => {
       // Load test data from fixtures
-      cy.fixture('lastCreatedUser').as('lastUser');
       cy.fixture('config').as('config');
       cy.fixture('newUserData').as('userData');
       cy.fixture('negativeFundTransferData').as('negativeData');
@@ -22,15 +23,35 @@ describe('Parabank - End-to-End UI Workflow (Login via UI + Fund Transfer)', () 
         usernamePrefix: this.userData.usernamePrefix,
         passwordPrefix: this.userData.password
         }).then(credentials => {
+        // Store credentials for subsequent tests
+        testCredentials = credentials;
+        cy.log('Created new user with credentials:', JSON.stringify(credentials));
+        // Verify lastCreatedUser.json was updated
+        cy.readFile('cypress/fixtures/lastCreatedUser.json').then(savedCreds => {
+          cy.log('Saved credentials:', JSON.stringify(savedCreds));
+          expect(savedCreds).to.have.property('username');
+          expect(savedCreds).to.have.property('password');
+        });
         // Logout after successful registration
-        cy.logout();})
+        cy.logout();
+      })
     });
     
     // Positive test scenario - successful fund transfer
     it('should login via UI, perform fund transfer, and verify transaction', function () {
-   
-      cy.login(this.lastUser.username, this.lastUser.password);
-      // Step 2: Navigate to transfer page and initiate transfer
+      expect(testCredentials, 'No test credentials available - registration test must run first').to.exist;
+      cy.log('Attempting login with:', JSON.stringify(testCredentials));
+      
+      cy.login(testCredentials.username, testCredentials.password);
+      
+      // Verify login was successful by checking for transfer link
+      cy.get('a[href="transfer.htm"]')
+        .should('be.visible')
+        .then(() => {
+          cy.log('Login successful - transfer link is visible');
+        });
+      
+      // Navigate to transfer page and initiate transfer
       cy.get('a[href="transfer.htm"]').click();
       cy.get('input[id=amount]').type('100');
       
@@ -48,7 +69,7 @@ describe('Parabank - End-to-End UI Workflow (Login via UI + Fund Transfer)', () 
       cy.contains('Transfer Complete!').should('be.visible');
       cy.wait(1000)
   
-      // Step 3: Verify transaction in account details
+      // Verify transaction in account details
       cy.contains('Accounts Overview').click();
       cy.wait(1000); // Wait for accounts page to load
       
@@ -78,13 +99,16 @@ describe('Parabank - End-to-End UI Workflow (Login via UI + Fund Transfer)', () 
   
     // Negative test scenarios - testing invalid transfers
     it('should handle invalid fund transfers', function() {
+        // Ensure we have credentials from previous test
+        expect(testCredentials, 'No test credentials available - registration test must run first').to.exist;
+        
         // Get scenarios from fixture and test each one
         this.negativeData.scenarios.forEach((scenario) => {
-            // Step 1: Login for scenario
-            cy.login(this.lastUser.username, this.lastUser.password);
+            // Login for scenario
+            cy.login(testCredentials.username, testCredentials.password);
             cy.wait(1000);
             
-            // Step 2: Attempt invalid fund transfer
+            // Attempt invalid fund transfer
             cy.get('a[href="transfer.htm"]').click();
             cy.log('Testing invalid amount:', scenario.amount);
             cy.get('input[id=amount]').clear().type(scenario.amount);
