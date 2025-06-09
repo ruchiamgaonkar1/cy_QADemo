@@ -58,43 +58,4 @@ describe('Transfer Validation via API', () => {
                 });
             });
     });
-
-    it.skip('should validate negative transfer scenarios via API', function() {
-        // Login first to get customer ID
-        cy.login(this.lastUser.username, this.lastUser.password, true)
-            .then(() => {
-                expect(Cypress.env('customerId')).to.not.be.null;
-                cy.log('Using customer ID:', Cypress.env('customerId'));
-
-                // Get account for testing
-                getCustomerAccounts(Cypress.env('customerId')).then((accountsResponse) => {
-                    const accounts = accountsResponse.body;
-                    const accountId = accounts[0].id;
-
-                    // Test each negative scenario
-                    this.negativeData.scenarios.forEach((scenario) => {
-                        cy.log(`Testing transfer with: ${scenario.description}`);
-                        
-                        performTransfer({
-                            fromAccountId: accountId,
-                            toAccountId: accountId,
-                            amount: scenario.amount
-                        }).then((response) => {
-                            // Verify error response
-                            if (scenario.expectedError) {
-                                expect(response.body).to.include(scenario.expectedError);
-                            }
-
-                            // For known issues that should fail but don't, verify no transaction was created
-                            if (scenario.knownIssue) {
-                                getCustomerAccounts(Cypress.env('customerId')).then((accountsAfter) => {
-                                    const accountAfter = accountsAfter.body.find(acc => acc.id === accountId);
-                                    cy.log('Account balance after failed transfer attempt:', accountAfter.balance);
-                                });
-                            }
-                        });
-                    });
-                });
-            });
-    });
-}); 
+});

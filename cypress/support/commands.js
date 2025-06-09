@@ -89,7 +89,7 @@ Cypress.Commands.add('login', (username, password, useApi = false) => {
         cy.get('input[name="username"]').type(username);
         cy.get('input[name="password"]').type(password);
         cy.get('input[value="Log In"]').click();
-        // cy.wait(1000); // Wait for login process
+        cy.wait(1000); // Wait for login process
         
         // // Get customer ID after successful login
         // return cy.getCustomerId();
@@ -103,7 +103,7 @@ Cypress.Commands.add('login', (username, password, useApi = false) => {
  */
 Cypress.Commands.add('logout', () => {
     cy.get('a[href="logout.htm"]').click();
-    // cy.wait(500);
+    cy.wait(500);
 });
 
 /**
