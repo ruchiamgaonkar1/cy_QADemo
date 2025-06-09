@@ -1,4 +1,10 @@
 {
     "baseUrl": "https://parabank.parasoft.com/parabank",
-    "apiUrl": "https://parabank.parasoft.com/parabank/services/bank"
+    "apiUrl": "https://parabank.parasoft.com/parabank/services/bank",
+    "apiEndpoints": {
+        "transfer": "/transfer?fromAccountId={fromAccountId}&toAccountId={toAccountId}&amount={amount}",
+        "accounts": "/customers/{customerId}/accounts",
+        "transactions": "/accounts/{accountId}/transactions",
+        "balance": "/accounts/{accountId}"
+    }
 }

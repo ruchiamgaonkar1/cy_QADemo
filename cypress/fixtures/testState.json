@@ -1,0 +1,17 @@
+{
+  "customerId": 18206,
+  "lastLoginResponse": {
+    "id": 18206,
+    "firstName": "Raman",
+    "lastName": "A",
+    "address": {
+      "street": "123 Main St",
+      "city": "London",
+      "state": "London",
+      "zipCode": "12345"
+    },
+    "phoneNumber": "123-456-7890",
+    "ssn": "123-45-6789"
+  },
+  "lastTestRun": "2025-06-09T09:15:41.816Z"
+}

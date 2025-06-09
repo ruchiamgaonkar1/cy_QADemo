@@ -56,3 +56,114 @@ export const generateCredentials = (options = {}) => {
 export const saveCredentials = (credentials) => {
     return cy.writeFile('cypress/fixtures/lastCreatedUser.json', credentials);
 }; 
+
+
+/**
+ * Extract account ID from XML string
+ * @param {String} xmlString - Response from API in XML format
+ * @returns {String} - accountId
+ */
+export const getAccountIdFromXml = (xmlString) => {
+    try {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlString, "application/xml");
+  
+      // Check for parsing errors
+      const errorNode = xmlDoc.querySelector("parsererror");
+      if (errorNode) {
+        console.error("Error parsing XML:", errorNode.textContent);
+        return null;
+      }
+  
+      // Select the 'id' element which is a direct child of 'account'
+      const accountIdElement = xmlDoc.querySelector("account > id");
+  
+      if (accountIdElement) {
+        return accountIdElement.textContent;
+      } else {
+        console.warn("Account ID element not found in the XML.");
+        return null;
+      }
+    } catch (e) {
+      console.error("An unexpected error occurred while processing XML:", e);
+      return null;
+    }
+  };
+
+/**
+ * Reads the 'amount' of the first 'Debit' transaction from an XML string.
+ *
+ * @param {string} xmlString The XML string containing transaction data.
+ * @returns {string | null} The amount of the first debit transaction if found, otherwise null.
+ */
+export const getFirstDebitAmountFromXml = (xmlString) => {
+    try {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlString, "application/xml");
+  
+      // Check for parsing errors
+      const errorNode = xmlDoc.querySelector("parsererror");
+      if (errorNode) {
+        console.error("Error parsing XML:", errorNode.textContent);
+        return null;
+      }
+  
+      // Select the first 'transaction' element where its 'type' child has text content 'Debit'
+      const firstDebitTransactionElement = xmlDoc.evaluate(
+        "//transaction[type='Debit']", // XPath to find any transaction whose 'type' child is 'Debit'
+        xmlDoc,
+        null,
+        XPathResult.FIRST_ORDERED_NODE_TYPE, // We only want the first one found
+        null
+      ).singleNodeValue;
+  
+      if (firstDebitTransactionElement) {
+        const amountElement = firstDebitTransactionElement.querySelector("amount");
+        if (amountElement) {
+          return amountElement.textContent;
+        } else {
+          console.warn("No 'amount' element found for the first debit transaction.");
+          return null;
+        }
+      } else {
+        console.warn("No 'Debit' transaction found in the XML.");
+        return null;
+      }
+    } catch (e) {
+      console.error("An unexpected error occurred while processing XML:", e);
+      return null;
+    }
+  };
+
+  /**
+ * Reads the 'balance' from an XML string representing an account.
+ *
+ * @param {string} xmlString The XML string containing account data.
+ * @returns {string | null} The account balance as a string if found, otherwise null.
+ */
+export const getBalanceFromAccountXml = (xmlString) => {
+    try {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlString, "application/xml");
+  
+      // Check for parsing errors
+      const errorNode = xmlDoc.querySelector("parsererror");
+      if (errorNode) {
+        console.error("Error parsing XML:", errorNode.textContent);
+        return null;
+      }
+  
+      // Select the 'balance' element which is a direct child of 'account'
+      const balanceElement = xmlDoc.querySelector("account > balance");
+  
+      if (balanceElement) {
+        return balanceElement.textContent;
+      } else {
+        console.warn("Balance element not found in the XML.");
+        return null;
+      }
+    } catch (e) {
+      console.error("An unexpected error occurred while processing XML:", e);
+      return null;
+    }
+  };
