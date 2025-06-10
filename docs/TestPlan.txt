@@ -4,6 +4,7 @@ Parabank Website Test Plan:
 
 This document outlines the comprehensive test plan for the Parabank demo website, 
 hosted at `https://parabank.parasoft.com/parabank/overview.htm`. 
+The api docs for parabank can be referred from `https://parabank.parasoft.com/parabank/api-docs/index.html`.
 The plan focuses on validating its core online banking functionalities, including user registration, 
 account management, funds transfers, bill payments, loan requests, and customer support features. 
 The primary goal is to ensure the website's functionality, usability, data integrity, 

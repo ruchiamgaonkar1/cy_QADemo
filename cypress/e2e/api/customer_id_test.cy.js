@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('Customer ID and Account Creation Test', () => {
+describe('Get Customer ID and it\'s details', () => {
     beforeEach(() => {
         cy.fixture('lastCreatedUser').as('user');
         // Load saved state if it exists
@@ -11,7 +11,7 @@ describe('Customer ID and Account Creation Test', () => {
         });
     });
 
-    it('should get customer ID using direct login', function() {
+    it('should get customer ID and details', function() {
         cy.getCustomerIdFromDirectLogin(this.user.username, this.user.password)
             .then((id) => {
                 expect(id).to.not.be.null;
