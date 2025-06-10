@@ -52,7 +52,7 @@ describe('Transfer Validation via API', () => {
                             // Verify account balance
                             verifyAccountBalance({
                                 accountId: fromAccount,
-                                expectedBalance: Number(initialBalance + amount).toFixed(1) // Balance should remain same for self-transfer
+                                expectedBalance: Number(initialBalance + amount).toFixed(2) // Balance should remain same for self-transfer
                             });
                         });
                 });

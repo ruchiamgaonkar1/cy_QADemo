@@ -13,6 +13,7 @@ import './commands/auth.commands';
 import './commands/registration.commands';
 import './commands/navigation.commands';
 import './commands/customer.commands';
+import './commands/transactions.commands';
 
 // Export an empty object to satisfy module requirements
 export {};
