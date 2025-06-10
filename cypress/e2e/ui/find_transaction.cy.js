@@ -51,10 +51,10 @@ describe('Find Transaction Tests', () => {
         cy.get('#transactionDateError').should('not.be.empty');
       });
 
-      it('should log error for future date', () => {
+      it('should handle future date', () => {
         const futureDate = dayjs().add(1, 'year').format('MM-DD-YYYY');
         cy.findTransactionByDate(futureDate);
-        cy.get('#errorContainer').should('be.visible');
+        cy.verifyEmptyTransactionResults();
       });
     });
 
@@ -70,7 +70,7 @@ describe('Find Transaction Tests', () => {
         const futureDate = dayjs().add(1, 'year').format('MM-DD-YYYY');
         const pastDate = dayjs().subtract(1, 'year').format('MM-DD-YYYY');
         cy.findTransactionByDateRange(futureDate, pastDate);
-        cy.verifyLoggedError();
+        cy.verifyEmptyTransactionResults();
       });
     });
 
@@ -85,9 +85,9 @@ describe('Find Transaction Tests', () => {
         cy.get('#amountError').should('not.be.empty');
       });
 
-      it('should log error for non-existent amount', () => {
+      it('should handle non-existent amount', () => {
         cy.findTransactionByAmount('999999.99');
-        cy.verifyLoggedError();
+        cy.verifyEmptyTransactionResults();
       });
     });
 

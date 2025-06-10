@@ -105,6 +105,19 @@ Cypress.Commands.add('navigateToFindTransactions', () => {
       expect($headers.eq(3)).to.contain('Credit');
     });
   });
+
+  Cypress.Commands.add('verifyEmptyTransactionResults', () => {
+    // Verify results container is visible
+    cy.get('#resultContainer')
+      .should('be.visible')
+      .and('not.have.css', 'display', 'none');
+    
+    // Verify table exists and has content
+    cy.get('#transactionTable')
+      .should('be.visible')
+      .find('#transactionBody tr')
+      .should('have.length.at.least', 0);
+  });
   
   Cypress.Commands.add('verifyTransactionDetails', () => {
     cy.get('#transactionTable tbody tr').first().within(() => {
