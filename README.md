@@ -1,155 +1,187 @@
-# Cypress QA Demo
+## Cypress QA Demo
 
-This project contains automated test cases using Cypress for QA testing purposes.
+This repository contains automated test cases written in Cypress for end-to-end UI and API testing. It serves as a demo project showcasing best practices in test automation using Cypress, including custom commands, environment configurations, and report generation. 
+Test plan for reference [View Test Plan](./docs/TestPlan.txt)
+
+
+## Features
+
+* Automated UI & API testing using Cypress
+* Custom commands for reusable login and user creation logic
+* Environment-specific test execution
+* HTML test reports via Mochawesome
+* Easy-to-configure test data and credentials
 
 ## Prerequisites
-- Node.js (v12 or higher)
-- npm (v6 or higher)
-- A modern web browser (Chrome recommended)
 
-## Installation
+* [Node.js](https://nodejs.org/) (v12 or higher)
+* npm (v6 or higher)
+* cypress (https://docs.cypress.io/app/get-started/install-cypress)
+* A web browser (Electron, Chrome recommended)
+
+---
+
+## Installation 
 
 1. Clone the repository:
-```bash
-git clone <repository-url>
-cd cy_QADemo
-```
 
-2. Install dependencies:
-```bash
-npm install
-```
+   ```bash
+   git clone https://github.com/ruchiamgaonkar1/cy_QADemo.git
+   cd cy_QADemo
+   ```
+
+2. Install dependencies(if any):
+
+   ```bash
+   npm install
+   ```
+
+---
 
 ## Configuration
 
-### Reporter Setup
-1. Install mochawesome reporter:
-```bash
-npm i --save-dev cypress-mochawesome-reporter
-```
+### Reporter Setup (Mochawesome) [if you want to generate HTML reports]
 
-2. Configure reporter in `cypress.config.js`:
-```javascript
-const { defineConfig } = require('cypress')
-module.exports = defineConfig({
-    reporter: 'mochawesome',
-    reporterOptions: {
-        reportDir: 'cypress/results',
-        overwrite: false,
-        html: true,
-        json: false,
-        reportPageTitle: 'custom-title',
-        embeddedScreenshots: false,
+1. Install the reporter:
+
+   ```bash
+   npm i --save-dev cypress-mochawesome-reporter
+   ```
+
+2. Add the reporter configuration in `cypress.config.js`:
+
+   ```js
+   const { defineConfig } = require('cypress');
+
+   module.exports = defineConfig({
+     reporter: 'cypress-mochawesome-reporter',
+     reporterOptions: {
+      reportDir: 'cypress/results',
+      overwrite: false,
+      html: true,
+      json: false,
+      reportPageTitle: 'custom-title',
+      embeddedScreenshots: false,
     },
-})
-```
+     e2e: {
+       setupNodeEvents(on, config) {
+         require('cypress-mochawesome-reporter/plugin')(on);
+       },
+     },
+   });
+   ```
 
-3. Import reporter in `support/e2e.js`:
-```javascript
-import 'cypress-mochawesome-reporter/register';
-```
+3. Import the reporter in `cypress/support/e2e.js`:
+
+   ```js
+   import 'cypress-mochawesome-reporter/register';
+   ```
+
+---
 
 ## Custom Commands
 
-Custom commands are defined in `cypress/support/commands.js`. These commands extend Cypress's functionality for our specific testing needs.
+Custom commands are defined in `cypress/support/commands.js` and extend Cypress functionality.
 
-### Available Commands
-Example:
-1. **Login Command**
-```javascript
-// Usage: cy.login(username, password)
-// Usage: cy.login(username, password, true) // true to verify login via api
-```
+### Examples:
 
-2. **Create User Command**
-```javascript
-// Usage: cy.getCustomerIdFromDirectLogin(username, password)
-```
+* **Login Command**
+
+  ```js
+  cy.login(username, password);
+  cy.login(username, password, true); // true for API login
+  ```
+
+* **Create User Command**
+
+  ```js
+  cy.getCustomerIdFromDirectLogin(username, password);
+  ```
+
+---
 
 ## Environment Variables
 
-Environment variables are managed through `cypress.env.json` and `cypress.config.js`.
-These variables help configure test behavior across different environments.
+Manage environment settings in:
 
-### Configuration Files
+* `cypress.env.json`
+* `cypress.config.js`
 
-1. Create `cypress.env.json` in the project root:
-```json
-{
-    "customerId": null,
-    "username": null,
-    "password": null,
-    "lastLoginResponse": null
-}
-```
-
-2. Update `cypress.config.js`:
-```javascript
-const { defineConfig } = require('cypress')
-module.exports = defineConfig({
-    env: {
-        ...
-    },
-    // ... other config options
-})
-```
-
-### Running with Different Environments
-```bash
-# Run tests with production environment
-npx cypress run --env environment=production
-
-# Run tests with staging environment
-npx cypress run --env environment=staging
-```
+---
 
 ## Running Tests
 
 ### Method 1: Using Cypress UI
-1. Launch Cypress Test Runner:
+
 ```bash
 npx cypress open
 ```
-2. Select E2E Testing
-3. Choose your preferred browser
-4. Select the test file to run
-5. View test execution in real-time
+
+* Select "E2E Testing"
+* Choose a browser
+* Pick a test to run
 
 ### Method 2: Headless Mode (Terminal)
+
 ```bash
 npx cypress run --headless --reporter mochawesome --reporter-options reportDir="cypress/results/"
 ```
 
+---
+
 ## Test Scenarios
 
 ### 1. New User Registration Test
-- **Purpose**: Validates the user registration flow
-- **File**: `lastCreatedUser.json` is updated with new user details
-- **Default Test Data can be used as in  `lastCreatedUser.json`**:
-```json
-{
+
+* **Purpose:** Validate registration flow
+* **Data file:** `lastCreatedUser.json`
+* **Default Test User:**
+
+  ```json
+  {
     "username": "john",
     "password": "demo"
-}
-```
+  }
+  ```
 
 ### 2. User Login Test
-- **Purpose**: Validates the login functionality
-- **Dependencies**: Uses credentials from `lastCreatedUser.json`
-- **Behavior**: Authenticates using the most recently created user credentials
+
+* **Purpose:** Validate login functionality
+* **Dependency:** Reads from `lastCreatedUser.json`
+* **Details:** Uses most recent credentials to verify login
+
+---
 
 ## Reports
-- Reports are generated in the `cypress/results` folder for terminal execution
-- HTML reports include:
-  - Test execution summary
-  - Step-by-step test details
 
+* Reports are generated in `cypress/results`
+* HTML Report includes:
+
+  * Test summaries
+  * Step-by-step execution
+  * Screenshots (if configured)
+
+---
 
 ## Troubleshooting
-- Ensure all dependencies are properly installed
-- Check if `cypress/results` directory exists
-- Verify browser compatibility
-- Review console logs for any error messages
-- Check environment variables are properly set
-- Verify custom commands are properly imported
-    
+
+* Ensure dependencies are installed (`npm install`)
+* Check if `cypress/results` directory exists
+* Verify browser compatibility
+* Review terminal or Cypress UI logs for errors
+* Ensure environment variables are properly configured
+* Confirm all custom commands are correctly imported
+
+---
+## Future Goals
+
+Planned improvements and upcoming features:
+
+- Extend test coverage to negative scenarios and edge cases
+- Add support for multiple environments and dynamic test data
+- Integrate API contract testing using Postman or Swagger
+- Refactor and modularize reusable functions and commands
+- Enhance reporting capabilities with additional metrics and insights
+- Explore integration with CI/CD pipelines for continuous testing and deployment, tag based execution.
+
+
