@@ -120,8 +120,7 @@ suitable for validating a demo application.
 5.3. Test Automation Strategy
 
 *  Scope:  Key repeatable flows such as User Registration, Login, Account Overview, Transfer Funds, and Bill Pay (adding payee, making payment).
-*  Tools:  Selenium WebDriver or Playwright for UI automation, simple HTTP client (e.g., Postman) for API validation if direct API calls are possible and stable on the demo.
-*  Focus:  Ensure the core flows are stable and quickly verifiable after any changes.
+*  Tools:  Cypress Automation for UI and API testing, simple HTTP client (e.g., Postman) for API validation if direct API calls are possible and stable on the demo.
 
 6. Test Environment
 
