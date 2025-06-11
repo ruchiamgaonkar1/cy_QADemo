@@ -4,6 +4,7 @@ describe('Browser Navigation Tests', () => {
         cy.navigateToLogin();
         cy.fixture('config').as('config');
         cy.fixture('lastCreatedUser').as('lastUser');
+        cy.fixture('newUserData').as('userData');
     });
 
     it('should handle browser back and forward navigation correctly', function() {
@@ -46,7 +47,13 @@ describe('Browser Navigation Tests', () => {
     });
 
     it('should handle navigation after login', function() {
-        cy.login(this.lastUser.username, this.lastUser.password);
+        cy.registerUser(this.userData, {
+            usernamePrefix: this.userData.usernamePrefix,
+            passwordPrefix: this.userData.password
+        }).then(credentials => {
+            cy.logout();
+            cy.login(credentials.username, credentials.password);
+        });
 
         // Verify successful login
         cy.get('#leftPanel').should('contain', 'Account Services');
@@ -55,6 +62,7 @@ describe('Browser Navigation Tests', () => {
         cy.contains('Transfer Funds').click();
         cy.url().should('include', '/transfer.htm');
         cy.get('#rightPanel h1').should('contain', 'Transfer Funds');
+        cy.wait(1000);
 
         // Go back to accounts overview
         cy.go('back');
